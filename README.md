@@ -1,4 +1,4 @@
-# Python Module RPM Generator
+# Perl Module RPM Generator
 
 This repo is intended for generating RPM packages from Perl modules.
 
