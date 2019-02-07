@@ -1,0 +1,49 @@
+---
+- hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Include Var files
+      include_vars: "{{ item }}"
+      with_fileglob:
+        - vars.yml
+        - local.yml
+
+    - name: Create an output dir
+      file:
+        path: out
+        state: directory
+
+    - name: Add Oracle Yum Repo for InstantClient
+      yum_repository:
+        name: oracle_client
+        description: Oracle InstantClient
+        baseurl: http://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/x86_64
+        gpgcheck: no
+      become: yes
+
+    - name: Install Development Tools
+      yum:
+        name: "{{ dev_tools }}"
+        state: present
+      become: yes
+
+    - name: Install FPM Ruby gem
+      gem:
+        name: fpm
+        state: present
+
+    - name: Build Perl Modules as RPM's
+      command: >-
+        bin/fpm --no-cpan-sandbox-non-core -s cpan -t rpm -f -p out
+        --vendor {{ vendor }} {{ item }}
+      loop: "{{ perl_mods }}"
+      environment:
+        LD_LIBRARY_PATH: /usr/lib/oracle/18.3/client64/lib
+        ORACLE_HOME: /usr/lib/oracle/18.3/client64
+
+    - name: Download new RPM's
+      synchronize:
+        mode: pull
+        src: out/
+        dest: out/
