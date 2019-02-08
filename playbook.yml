@@ -9,9 +9,9 @@
         - vars.yml
         - local.yml
 
-    - name: Create an output dir
+    - name: Create an rpm output dir
       file:
-        path: out
+        path: rpm
         state: directory
 
     - name: Add Oracle Yum Repo for InstantClient
@@ -19,7 +19,7 @@
         name: oracle_client
         description: Oracle InstantClient
         baseurl: http://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/x86_64
-        gpgcheck: no
+        gpgkey: http://yum.oracle.com/RPM-GPG-KEY-oracle-ol7
       become: yes
 
     - name: Install Development Tools
@@ -35,7 +35,7 @@
 
     - name: Build Perl Modules as RPM's
       command: >-
-        bin/fpm --no-cpan-sandbox-non-core -s cpan -t rpm -f -p out
+        bin/fpm --no-cpan-sandbox-non-core -s cpan -t rpm -f -p rpm
         --vendor {{ vendor }} {{ item }}
       loop: "{{ perl_mods }}"
       environment:
@@ -45,5 +45,5 @@
     - name: Download new RPM's
       synchronize:
         mode: pull
-        src: out/
+        src: rpm/
         dest: out/
