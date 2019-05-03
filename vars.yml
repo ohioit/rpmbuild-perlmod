@@ -6,15 +6,22 @@ dev_tools:
   - ruby-devel # needed for ruby gem install of fpm
   - perl-local-lib # needed for fpm -s cpan
   - perl-App-cpanminus # needed for fpm -s cpan
-  - oracle-instantclient18.3-basic
-  - oracle-instantclient18.3-devel
-  - oracle-instantclient18.3-sqlplus
+  - oracle-instantclient18.3-basic # dependency for DBD::Oracle
+  - oracle-instantclient18.3-devel # dependency for DBD::Oracle
+  - oracle-instantclient18.3-sqlplus # dependency for DBD::Oracle
+  - htmldoc # requires EPEL and dependency for HTML::HTMLDoc
+  - perl-File-Which # dependency for XML::LibXML::Simple
+  - perl-XML-LibXML # dependency for XML::LibXML::Simple
+  - mod_perl-devel # dependency for Apache2::AuthCookie
+  - perl-CGI # dependency for Apache2::AuthCookie
+  - perl-core
 
 perl_mods:
+  - DBD::Oracle
   - Data::JavaScript
-  - Devel::StackTrace
-  - Email::Stuffer
-  - HTML::HTMLDoc
-  - MIME::Lite
+  # - HTML::HTMLDoc # depends on htmldoc from EPEL
   - XML::LibXML::Simple
-  - XML::SAX::PurePerl
+  # - XML::SAX::PurePerl
+  - Email::Stuffer
+  - Apache2::AuthCookie
+  - Apache::DBI
