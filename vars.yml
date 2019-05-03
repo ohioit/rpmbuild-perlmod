@@ -11,4 +11,10 @@ dev_tools:
   - oracle-instantclient18.3-sqlplus
 
 perl_mods:
-  - DBD::Oracle
+  - Data::JavaScript
+  - Devel::StackTrace
+  - Email::Stuffer
+  - HTML::HTMLDoc
+  - MIME::Lite
+  - XML::LibXML::Simple
+  - XML::SAX::PurePerl
